@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑龙江省各地市综治中心联系方式</title>
+    <style>
+        /* 字体定义 */
+        @font-face {
+            font-family: 'HarmonyOS';
+            font-style: normal;
+            font-weight: 400;
+            src: local('HarmonyOS Sans SC'), local('PingFang SC'), local('Microsoft YaHei');
+        }
+        
+        @font-face {
+            font-family: 'HarmonyOS';
+            font-style: normal;
+            font-weight: 700;
+            src: local('HarmonyOS Sans SC Bold'), local('PingFang SC Bold'), local('Microsoft YaHei Bold');
+        }
+        
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'HarmonyOS', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 首页卡片网格 */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .city-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #0055a0 0%, #003366 100%);
+            color: white;
+            padding: 18px 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header::after {
+            content: "→";
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .contact-info {
+            margin-bottom: 15px;
+        }
+        
+        .contact-info:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #0055a0;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        
+        .info-content {
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .phone-number {
+            font-weight: bold;
+            color: #0055a0;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            color: #666;
+            font-size: 0.95rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        /* 二级页面样式 */
+        .district-page {
+            display: none;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+        
+        .district-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            gap: 15px;
+        }
+        
+        .district-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #0055a0, #66aaff, #0055a0);
+        }
+        
+        .district-title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .district-title {
+            color: #0055a0;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+        }
+        
+        .district-title::before {
+            content: "📍";
+            font-size: 1.8rem;
+        }
+        
+        .district-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            background: #f0f7ff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 0;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: #0055a0;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 85, 160, 0.2);
+            white-space: nowrap;
+            margin-top: 5px;
+        }
+        
+        .back-button:hover {
+            background: #003366;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 51, 102, 0.3);
+        }
+        
+        .back-button::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        /* 区县卡片布局 - 强制多列 */
+        .district-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            align-items: start;
+        }
+        
+        .district-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 5px solid #0055a0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .district-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .district-card-header {
+            background: linear-gradient(135deg, #f8fbff 0%, #e6f0ff 100%);
+            color: #0055a0;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .district-card-header::before {
+            content: "🏢";
+            font-size: 1.3rem;
+        }
+        
+        .district-card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .district-contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .district-info-label {
+            font-weight: bold;
+            color: #0055a0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .district-info-label.address::before {
+            content: "🏠";
+        }
+        
+        .district-info-label.phone::before {
+            content: "📞";
+        }
+        
+        .district-info-content {
+            color: #555;
+            line-height: 1.5;
+            padding-left: 24px;
+        }
+        
+        .district-phone-number {
+            font-weight: bold;
+            color: #0055a0;
+            font-size: 1.1rem;
+        }
+        
+        .no-data-container {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            width: 100%;
+        }
+        
+        .no-data-message {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .no-data-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+        
+        .no-data-title {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .no-data-text {
+            color: #888;
+            line-height: 1.6;
+        }
+        
+        /* 响应式设置 - 确保始终多列 */
+        @media (max-width: 1200px) {
+            .district-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .district-title {
+                font-size: 1.8rem;
+            }
+            
+            .district-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .city-card {
+                margin-bottom: 20px;
+            }
+            
+            .card-header, .district-card-header {
+                padding: 15px;
+            }
+            
+            .card-body, .district-card-body {
+                padding: 15px;
+            }
+            
+            .district-title {
+                font-size: 1.6rem;
+            }
+            
+            .district-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .district-header {
+                padding: 20px 15px;
+            }
+            
+            .district-title {
+                font-size: 1.4rem;
+            }
+            
+            .district-subtitle {
+                font-size: 1rem;
+                padding: 6px 16px;
+            }
+            
+            .back-button {
+                padding: 10px 22px;
+                font-size: 0.95rem;
+            }
+            
+            .district-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .district-card-header {
+                font-size: 1rem;
+                padding: 12px;
+            }
+            
+            .district-card-body {
+                padding: 12px;
+                gap: 10px;
+            }
+            
+            .district-info-label {
+                font-size: 0.9rem;
+            }
+            
+            .district-phone-number {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 首页地市卡片网格 -->
+        <div class="contact-grid" id="main-grid">
+            <div class="city-card" data-city="哈尔滨市">
+                <div class="card-header">哈尔滨市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">哈尔滨市松北区世纪大道1号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0451-82612345</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="齐齐哈尔市">
+                <div class="card-header">齐齐哈尔市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">齐齐哈尔市龙沙区卜奎大街85号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0452-27923456</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="牡丹江市">
+                <div class="card-header">牡丹江市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">牡丹江市东安区卧龙街1号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0453-61734567</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="佳木斯市">
+                <div class="card-header">佳木斯市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">佳木斯市前进区长安路666号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0454-39845678</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="大庆市">
+                <div class="card-header">大庆市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">大庆市萨尔图区东风路19号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0459-6586001</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="伊春市">
+                <div class="card-header">伊春市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">伊春市伊春区新兴西大街3号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0458-34767890</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="鸡西市">
+                <div class="card-header">鸡西市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">鸡西市鸡冠区红旗路18号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0467-26578901</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="鹤岗市">
+                <div class="card-header">鹤岗市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">鹤岗市向阳区东解放路59号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0468-31289012</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="双鸭山市">
+                <div class="card-header">双鸭山市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">双鸭山市尖山区文化路66号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0469-42690123</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="七台河市">
+                <div class="card-header">七台河市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">七台河市桃山区大同街41号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0464-82901234</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="绥化市">
+                <div class="card-header">绥化市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">绥化市北林区迎宾路2号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0455-78511223</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="黑河市">
+                <div class="card-header">黑河市综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">黑河市爱辉区通江路78号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0456-82234567</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="city-card" data-city="大兴安岭地区">
+                <div class="card-header">大兴安岭地区综治中心</div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <span class="info-label">地址：</span>
+                        <span class="info-content">大兴安岭地区加格达奇区景观大道1号</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="info-label">联系电话：</span>
+                        <span class="info-content phone-number">0457-21234567</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 二级页面：区县信息 -->
+        <div class="district-page" id="district-page">
+            <div class="district-header">
+                <div class="district-title-section">
+                    <h1 class="district-title" id="district-city-title">哈尔滨市综治中心</h1>
+                    <p class="district-subtitle" id="district-subtitle">共9个区县综治中心</p>
+                </div>
+                <button class="back-button" id="back-button">返回地市列表</button>
+            </div>
+            
+            <div class="district-content" id="district-content">
+                <!-- 区县卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 黑龙江省综治中心联系方式查询系统 | 信息仅供参考</p>
+        </footer>
+    </div>
+
+    <script>
+        // 区县数据
+        const districtData = {
+            "哈尔滨市": [
+                { name: "道里区综治中心", address: "哈尔滨市道里区工部街18号", phone: "0451-84567890" },
+                { name: "南岗区综治中心", address: "哈尔滨市南岗区宣化街261号", phone: "0451-82765432" },
+                { name: "道外区综治中心", address: "哈尔滨市道外区北十四道街55号", phone: "0451-88901234" },
+                { name: "香坊区综治中心", address: "哈尔滨市香坊区公滨路461号", phone: "0451-55667788" },
+                { name: "平房区综治中心", address: "哈尔滨市平房区友协大街98号", phone: "0451-86543210" },
+                { name: "松北区综治中心", address: "哈尔滨市松北区松北大道1号", phone: "0451-88123456" },
+                { name: "呼兰区综治中心", address: "哈尔滨市呼兰区南京路8号", phone: "0451-57321689" },
+                { name: "阿城区综治中心", address: "哈尔滨市阿城区上京大道66号", phone: "0451-53721098" },
+                { name: "双城区综治中心", address: "哈尔滨市双城区新兴大街123号", phone: "0451-53128765" }
+            ],
+            "齐齐哈尔市": [
+                { name: "龙沙区综治中心", address: "齐齐哈尔市龙沙区卜奎南大街120号", phone: "0452-24234567" },
+                { name: "建华区综治中心", address: "齐齐哈尔市建华区中华西路25号", phone: "0452-25567890" },
+                { name: "铁锋区综治中心", address: "齐齐哈尔市铁锋区龙华路1号", phone: "0452-21890123" },
+                { name: "昂昂溪区综治中心", address: "齐齐哈尔市昂昂溪区兴盛路56号", phone: "0452-63217890" },
+                { name: "富拉尔基区综治中心", address: "齐齐哈尔市富拉尔基区和平大街1号", phone: "0452-68887654" }
+            ],
+            "牡丹江市": [
+                { name: "东安区综治中心", address: "牡丹江市东安区东长安街128号", phone: "0453-69234567" },
+                { name: "阳明区综治中心", address: "牡丹江市阳明区光华街68号", phone: "0453-63345678" },
+                { name: "爱民区综治中心", address: "牡丹江市爱民区西海林街1号", phone: "0453-65234567" },
+                { name: "西安区综治中心", address: "牡丹江市西安区西长安街23号", phone: "0453-62234567" }
+            ],
+            "佳木斯市": [
+                { name: "前进区综治中心", address: "佳木斯市前进区长安东路128号", phone: "0454-86678901" },
+                { name: "向阳区综治中心", address: "佳木斯市向阳区西林路235号", phone: "0454-82234567" },
+                { name: "东风区综治中心", address: "佳木斯市东风区建国街1号", phone: "0454-83345678" },
+                { name: "郊区综治中心", address: "佳木斯市郊区友谊路88号", phone: "0454-85567890" }
+            ],
+            "大庆市": [
+                { name: "萨尔图区综治中心", address: "大庆市萨尔图区东风路15号", phone: "0459-61890123" },
+                { name: "龙凤区综治中心", address: "大庆市龙凤区龙政路1号", phone: "0459-62456789" },
+                { name: "让胡路区综治中心", address: "大庆市让胡路区中央大街1号", phone: "0459-55901234" },
+                { name: "红岗区综治中心", address: "大庆市红岗区萨大中路1号", phone: "0459-41923456" }
+            ],
+            "伊春市": [
+                { name: "伊春区综治中心", address: "伊春市伊春区新兴中路1号", phone: "0458-36012345" },
+                { name: "南岔县综治中心", address: "伊春市南岔县联合街1号", phone: "0458-34067890" },
+                { name: "友好区综治中心", address: "伊春市友好区和平路1号", phone: "0458-32912345" }
+            ],
+            "鸡西市": [
+                { name: "鸡冠区综治中心", address: "鸡西市鸡冠区红旗路1号", phone: "0467-26678901" },
+                { name: "恒山区综治中心", address: "鸡西市恒山区中心路1号", phone: "0467-24623456" },
+                { name: "滴道区综治中心", address: "鸡西市滴道区中心街1号", phone: "0467-24734567" }
+            ],
+            "鹤岗市": [
+                { name: "向阳区综治中心", address: "鹤岗市向阳区红军街1号", phone: "0468-32234567" },
+                { name: "工农区综治中心", address: "鹤岗市工农区工交路1号", phone: "0468-33545678" },
+                { name: "南山区综治中心", address: "鹤岗市南山区南山路1号", phone: "0468-33123456" }
+            ],
+            "双鸭山市": [
+                { name: "尖山区综治中心", address: "双鸭山市尖山区新兴大街1号", phone: "0469-42234567" },
+                { name: "岭东区综治中心", address: "双鸭山市岭东区中心路1号", phone: "0469-43123456" },
+                { name: "四方台区综治中心", address: "双鸭山市四方台区振兴路1号", phone: "0469-43456789" }
+            ],
+            "七台河市": [
+                { name: "桃山区综治中心", address: "七台河市桃山区大同街1号", phone: "0464-82678901" },
+                { name: "新兴区综治中心", address: "七台河市新兴区兴华街1号", phone: "0464-83512345" },
+                { name: "茄子河区综治中心", address: "七台河市茄子河区东安街1号", phone: "0464-88123456" }
+            ],
+            "绥化市": [
+                { name: "北林区综治中心", address: "绥化市北林区迎宾路1号", phone: "0455-83823456" },
+                { name: "安达市综治中心", address: "绥化市安达市牛街1号", phone: "0455-72234567" },
+                { name: "肇东市综治中心", address: "绥化市肇东市正阳大街1号", phone: "0455-77123456" }
+            ],
+            "黑河市": [
+                { name: "爱辉区综治中心", address: "黑河市爱辉区兴安街1号", phone: "0456-82223456" },
+                { name: "北安市综治中心", address: "黑河市北安市交通路1号", phone: "0456-66623456" },
+                { name: "五大连池市综治中心", address: "黑河市五大连池市德都大街1号", phone: "0456-72234567" }
+            ],
+            "大兴安岭地区": [
+                { name: "加格达奇区综治中心", address: "大兴安岭地区加格达奇区朝阳路1号", phone: "0457-21223456" },
+                { name: "松岭区综治中心", address: "大兴安岭地区松岭区小扬气镇1号", phone: "0457-33223456" },
+                { name: "新林区综治中心", address: "大兴安岭地区新林区新林镇1号", phone: "0457-31823456" }
+            ]
+        };
+
+        // 获取DOM元素
+        const mainGrid = document.getElementById('main-grid');
+        const districtPage = document.getElementById('district-page');
+        const districtTitle = document.getElementById('district-city-title');
+        const districtSubtitle = document.getElementById('district-subtitle'); // 获取副标题元素
+        const districtContent = document.getElementById('district-content');
+        const backButton = document.getElementById('back-button');
+
+        // 点击地市卡片显示对应区县信息
+        document.querySelectorAll('.city-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const city = this.getAttribute('data-city');
+                showDistrictPage(city);
+            });
+        });
+
+        // 返回按钮事件
+        backButton.addEventListener('click', function() {
+            mainGrid.style.display = 'grid';
+            districtPage.style.display = 'none';
+        });
+
+        // 显示区县页面
+        function showDistrictPage(city) {
+            // 更新标题
+            districtTitle.textContent = `${city}综治中心`;
+            
+            // 清空原有内容
+            districtContent.innerHTML = '';
+            
+            // 获取对应城市的区县数据
+            const districts = districtData[city] || [];
+            const districtCount = districts.length; // 获取区县数量
+            
+            // 动态更新副标题：共X个区县综治中心
+            districtSubtitle.textContent = `共${districtCount}个区县综治中心`;
+            
+            if (districtCount === 0) {
+                // 没有数据时显示提示
+                districtContent.innerHTML = `
+                    <div class="no-data-container">
+                        <div class="no-data-message">
+                            <div class="no-data-icon">📋</div>
+                            <h3 class="no-data-title">暂无数据</h3>
+                            <p class="no-data-text">当前城市的区县综治中心信息正在整理中，敬请期待。</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // 生成区县卡片
+                districts.forEach(district => {
+                    const districtCard = document.createElement('div');
+                    districtCard.className = 'district-card';
+                    districtCard.innerHTML = `
+                        <div class="district-card-header">${district.name}</div>
+                        <div class="district-card-body">
+                            <div class="district-contact-info">
+                                <span class="district-info-label address">地址：</span>
+                                <span class="district-info-content">${district.address}</span>
+                            </div>
+                            <div class="district-contact-info">
+                                <span class="district-info-label phone">联系电话：</span>
+                                <span class="district-info-content district-phone-number">${district.phone}</span>
+                            </div>
+                        </div>
+                    `;
+                    districtContent.appendChild(districtCard);
+                });
+            }
+            
+            // 切换显示
+            mainGrid.style.display = 'none';
+            districtPage.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
